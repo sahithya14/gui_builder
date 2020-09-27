@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './UIElementsContainer.css';
-import { Droppable,Draggable } from "react-beautiful-dnd";
 
 const UIElementsContainer=(props)=> 
 {
@@ -10,7 +9,7 @@ const UIElementsContainer=(props)=>
             switch(props.formEleType){
                 case"input":
                 elementDom = ( 
-                        <input className="input" value="text field"></input>);    
+                        <input className="input" placeholder="text field"></input>);    
                  break;
                 case"label":
                 elementDom = ( 

@@ -8,7 +8,7 @@ import Workspace from './Workspace';
 
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getElementStyle = (isDragging, draggableStyle) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
     padding: grid * 2,
@@ -22,7 +22,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     ...draggableStyle
 });
 
-const getListStyle = isDraggingOver => ({
+const getContainerStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightblue' : '#e6f4f5',
     padding: grid,
     width: "100%",
@@ -46,7 +46,17 @@ class GUIContainer extends Component {
         workspaceItems:[],
         UIElements:["input","button","label"]
     };
-
+    saveToLocalStorage=()=>{
+      const local = this.state.workspaceItems;
+      localStorage.setItem("workspaceItems", JSON.stringify(local));
+      alert("Saved to Local");
+    }
+    componentDidMount() {
+        const workspaceItems = JSON.parse( localStorage.getItem( "workspaceItems" ) );
+        if(workspaceItems!== null){
+        this.setState( { workspaceItems:workspaceItems } );
+        }
+    }
     onDragEnd = result => {
         const { source, destination } = result;
 
@@ -95,7 +105,7 @@ class GUIContainer extends Component {
                         {(provided, snapshot) => (
                             <div
                                 ref={provided.innerRef}
-                                style={getListStyle(snapshot.isDraggingOver)}>
+                                style={getContainerStyle(snapshot.isDraggingOver)}>
                                 {this.state.UIElements.map((item, index) => (
                                     <Draggable
                                         key={item}
@@ -106,7 +116,7 @@ class GUIContainer extends Component {
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
-                                                style={getItemStyle(
+                                                style={getElementStyle(
                                                     snapshot.isDragging,
                                                     provided.draggableProps.style
                                                 )}>
@@ -123,13 +133,13 @@ class GUIContainer extends Component {
                     <div className="workspaceCont">
                       <div className="workspaceHeader">
                         <h3 className="workspaceLabel">Workspace</h3>
-                        <button className="saveLocalBtn">Save to Local</button>
+                        <button className="saveLocalBtn" onClick={this.saveToLocalStorage}>Save to Local</button>
                       </div>
                         <Droppable droppableId="droppable2">
                             {(provided, snapshot) => (
                                 <div
                                     ref={provided.innerRef}
-                                    style={getListStyle(snapshot.isDraggingOver)}>
+                                    style={getContainerStyle(snapshot.isDraggingOver)}>
                                     {this.state.workspaceItems.length !== 0?
                                         (this.state.workspaceItems.map((item, index) => (
                                         <Draggable
@@ -141,7 +151,7 @@ class GUIContainer extends Component {
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
-                                                    style={getItemStyle(
+                                                    style={getElementStyle(
                                                         snapshot.isDragging,
                                                         provided.draggableProps.style
                                                     )}>

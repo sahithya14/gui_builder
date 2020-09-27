@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import classes from './Workspace.module.css';
-import { Droppable,Draggable } from "react-beautiful-dnd";
-const UIElements=["input","button","label"];
-const grid = 8;
+
 const Workspace=(props)=> 
 {
     const getUIElement=()=>{
